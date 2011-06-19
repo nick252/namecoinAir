@@ -18,7 +18,8 @@ package ourGui
 			this.addChild(sprite);
 			sprite.x = 150;
 			sprite.y = 150;
-			var spriteText:InputField = new InputField(20,70,200,1,false);
+			
+			var spriteText:InputField = new InputField(20,30,200,4,false);
 			spriteText.scaleX = 1.7
 			spriteText.scaleY = 1.7	
 			spriteText.textField.text =text;

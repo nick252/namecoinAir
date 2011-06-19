@@ -1,5 +1,8 @@
 ﻿package  {
 	
+	import communication.RequestSender;
+	import communication.Start;
+	
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.display.MovieClip;
@@ -11,15 +14,16 @@
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
-	import vk.gui.InputField;
-	import vk.gui.MainMenu;
-	import vk.gui.MenuItem;
-	import communication.RequestSender;
-	import communication.Start;
+	import operations.HistoryController;
+	import operations.InfoController;
 	import operations.NewAddress;
 	import operations.SendMoney;
 	import operations.SettingsController;
-	import operations.HistoryController;
+	
+	import vk.gui.InputField;
+	import vk.gui.MainMenu;
+	import vk.gui.MenuItem;
+
 	/**
 	 * @author namecoinAir
 	 */
@@ -61,6 +65,7 @@
 			var mainMenuItem2:MenuItem =  mainMenu.addItem("History","");
 			var mainMenuItem3:MenuItem =  mainMenu.addItem("New address","");
 			var mainMenuItem4:MenuItem =  mainMenu.addItem("Settings","");
+			var mainMenuItem5:MenuItem =  mainMenu.addItem("Info","");
 			mainMenu.addEventListener(Event.CHANGE, function(e:Event):void
 			{
 				if (e.target is MainMenu)
@@ -76,6 +81,7 @@
 			new SendMoney(mainMenuItem1.panel);
 			new NewAddress(mainMenuItem3.panel);
 			new SettingsController(mainMenuItem4.panel);
+			new InfoController(mainMenuItem5.panel);
 			var balansTextFiled:InputField = new InputField(630,0,50,1,false);
 			balansTextFiled.textField.text ="balance";
 			this.addChild(balansTextFiled);

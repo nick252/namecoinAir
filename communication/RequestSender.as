@@ -1,6 +1,7 @@
 package communication
 {
 	import flash.net.SharedObject;
+	
 	import ourGui.SimpleAlert;
 	/**
 	 * @author namecoinAir
@@ -21,7 +22,8 @@ package communication
 		import vk.gui.InputField;
 		import vk.gui.MainMenu;
 		import vk.gui.MenuItem;
-		public static var simpleAlert:SimpleAlert = new SimpleAlert("Set namecoind.exe dir in settings")
+		public static var simpleAlert:SimpleAlert = new SimpleAlert("Set namecoind.exe dir in settings");
+		public static var simpleFail:SimpleAlert = new SimpleAlert("Fail to start namecoind.exe automatically. Please launch namecoind.exe, and let it be open");
 		public static function sendAsk(requestVector:Vector.<String>,textData:Function):void
 		{
 			var so:SharedObject;
@@ -53,8 +55,17 @@ package communication
 				}else
 				{
 					simpleAlert.visible = false;
-				}	
-				
+				}
+				var timerFlag:Boolean = false;
+				var testTimer:Timer = new Timer(12000,1);
+				testTimer.start();
+				testTimer.addEventListener(TimerEvent.TIMER_COMPLETE,testTimerComplete)
+				function testTimerComplete(ev:TimerEvent):void
+				{
+					testTimer.removeEventListener(TimerEvent.TIMER_COMPLETE,testTimerComplete);
+					MainClass.thisInstance.addChild(simpleFail);
+					simpleFail.visible = !timerFlag;
+				}
 				var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 				nativeProcessStartupInfo.executable = file;
 				nativeProcessStartupInfo.arguments = requestVector;
@@ -67,6 +78,8 @@ package communication
 			}
 			function onOutputData(event:ProgressEvent):void 
 			{ 
+				process.removeEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
+				timerFlag = true;
 				var stdOut:Number = process.standardOutput.bytesAvailable; 
 				textData(process.standardOutput.readUTFBytes(stdOut)); 
 				
